@@ -6,8 +6,14 @@ class Users_model extends CI_Model {
         $this->load->database();
     }
 
-    public function getreservations($user_id) {
-        
+    public function getreservations($user_id) {        
+        $this->db->select("*");
+        $this->db->from('reservations');
+        $this->db->join('items','reservations.item_id=items.id');
+        $this->db->join('users','reservations.user_id=users.id');
+        $this->db->where('users.id',$user_id);
+        $query = $this->db->get();
+        return $query->result();
     }
 
 // old examples from news tutorial    
