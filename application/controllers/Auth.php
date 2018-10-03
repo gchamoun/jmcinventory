@@ -35,7 +35,7 @@ class Auth extends CI_Controller {
      */
     public function login() {
         if (logged_in())
-            redirect('auth/dash');
+            redirect('users/dashboard');
 
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -52,7 +52,7 @@ class Auth extends CI_Controller {
                     exit;
                 }
 
-                redirect('users/dash');
+                redirect('users/dashboard');
             } else {
                 $data['error'] = 'Your email address and/or password is incorrect.';
                 if ($this->input->post("ismobile")) {
