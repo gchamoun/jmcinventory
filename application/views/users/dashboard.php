@@ -15,3 +15,8 @@ endforeach;
 
 ?>
 </table>
+
+<h2>Inventory</h2>
+<a href="/inventory/add">Add item</a>
+
+<br /><br /><br />

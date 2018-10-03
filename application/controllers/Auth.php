@@ -74,7 +74,7 @@ class Auth extends CI_Controller {
     public function signup() {
         // Redirect to your logged in landing page here
         if (logged_in())
-            redirect('auth/dash');
+            redirect('users/dashboard');
 
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -125,7 +125,7 @@ class Auth extends CI_Controller {
     public function forgot() {
         // Redirect to your logged in landing page here
         if (logged_in())
-            redirect('auth/dash');
+            redirect('users/dashboard');
 
         $test_emails = $this->config->item('authit_test_emails');
 
@@ -320,7 +320,7 @@ Note: This reset code will expire after ' . date('j M Y') . '.';
     public function reset() {
         // Redirect to your logged in landing page here
         if (logged_in())
-            redirect('auth/dash');
+            redirect('users/dashboard');
 
         $this->load->library('form_validation');
         $this->load->helper('form');
