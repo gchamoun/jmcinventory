@@ -1,9 +1,3 @@
-<html>
-<head>
-	<title>Reset Password</title>
-</head>
-<body>
-
 	<p><a href="<?php echo site_url('auth/login'); ?>">Login</a></p>
 
 	<?php 
@@ -21,6 +15,3 @@
 	    echo form_close();
     }
     ?>
-
-</body>
-</html>

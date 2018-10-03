@@ -16,9 +16,10 @@ class Users extends CI_Controller {
     public function dashboard() {
         if(!logged_in()) redirect('auth/login');
         $data['reservations'] = $this->users_model->getreservations(user('id'));
-        echo "Welcome back " . user('id');
-        echo "<br />Your role is " . user('role_id');
-        exit;
+        $data['title'] = "User dashboard";
+        $this->load->view("templates/header",$data);
+        $this->load->view("users/dashboard",$data);
+        $this->load->view("templates/footer");
     }
     
     // user should already be logged in

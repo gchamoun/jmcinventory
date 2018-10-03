@@ -1,9 +1,3 @@
-<html>
-<head>
-	<title>Login</title>
-</head>
-<body>
-
 	<p><a href="<?php echo site_url('auth/signup'); ?>">Sign Up</a> | <a href="<?php echo site_url('auth/forgot'); ?>">Forgot Password?</a></p>
 
 	<?php 
@@ -20,6 +14,3 @@
     echo form_submit(array('type' => 'submit', 'value' => 'Login'));
     echo form_close();
     ?>
-
-</body>
-</html>

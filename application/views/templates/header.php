@@ -1,6 +1,6 @@
 <html>
         <head>
-                <title>CodeIgniter Tutorial</title>
+                <title>JMC Inventory: <?php echo $title; ?></title>
                 <?php echo link_tag('assets/css/default.css'); ?>
         </head>
         <body>
