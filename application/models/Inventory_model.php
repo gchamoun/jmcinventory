@@ -35,6 +35,12 @@ class Inventory_model extends CI_Model {
         return $this->db->insert('items', $data);
     }
 
+    public function getallitems() {
+        $this->db->order_by('serial','asc');
+        $query = $this->db->get_where('items');
+        return $query->result();
+    }
+    
     public function delete_news($slug) {
         if (!$slug) {
             return false;
