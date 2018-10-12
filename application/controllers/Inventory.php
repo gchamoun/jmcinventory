@@ -33,4 +33,27 @@ class Inventory extends CI_Controller {
         $this->load->view('templates/footer');
     }
     
+    public function edit($item_id) {
+        
+    }
+    
+    public function delete($item_id) {
+        
+    }
+    
+    public function qrcode($item_id) {
+        $this->load->library('QRcode');
+        $data['qrdata'] = $item_id;
+        $this->load->view('/inventory/qrcode',$data);
+    }
+    
+    // http://localhost/inventory/mobile_checkin/3
+    public function mobile_checkin($item_id) {
+        
+    }
+
+    public function mobile_checkout($item_id) {
+        
+    }
+    
 }

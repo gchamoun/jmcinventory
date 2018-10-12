@@ -33,7 +33,12 @@ endforeach;
 <table>
 <?php
 foreach ($items as $item):
-    echo "<tr><td>{$item->serial}</td><td>{$item->description}</td><td>{$item->accessories}</td></tr>";
+    echo "<tr><td>{$item->serial}</td>";
+    echo "<td>{$item->description}</td>";
+    echo "<td>{$item->accessories}</td>";
+    echo "<td><a href=\"/inventory/qrcode/{$item->id}\">print qrcode</a></td>";
+    echo "<td><img src=\"/inventory/qrcode/{$item->id}\" /></td>";
+    echo "</tr>";
    
 endforeach;
 ?>
