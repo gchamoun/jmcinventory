@@ -9,8 +9,8 @@ class Users extends CI_Controller {
         $this->config->load('authit');
         $this->load->model('users_model');
         $this->load->model('inventory_model');
-        $this->load->helper('html_helper');
-        $this->load->helper('url_helper');
+        $this->load->helper('html');
+        $this->load->helper('url');
         $this->load->library('session');
     }
 

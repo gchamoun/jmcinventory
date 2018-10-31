@@ -36,8 +36,8 @@ foreach ($items as $item):
     echo "<tr><td>{$item->serial}</td>";
     echo "<td>{$item->description}</td>";
     echo "<td>{$item->accessories}</td>";
-    echo "<td><a href=\"/inventory/qrcode/{$item->id}\">print qrcode</a></td>";
-    echo "<td><img src=\"/inventory/qrcode/{$item->id}\" /></td>";
+    echo "<td><a href=\"/inventory/qrcode/{$item->id}/1\">print qrcode</a></td>";
+    echo "<td><img src=\"/inventory/qrcode/{$item->id}/1\" /></td>";
     echo "</tr>";
    
 endforeach;

@@ -8,8 +8,8 @@ class Inventory extends CI_Controller {
         $this->load->helper('authit');
         $this->config->load('authit');
         $this->load->model('inventory_model');
-        $this->load->helper('html_helper');
-        $this->load->helper('url_helper');
+        $this->load->helper('html');
+        $this->load->helper('url');
         $this->load->library('session');
     }
 
@@ -80,11 +80,25 @@ class Inventory extends CI_Controller {
     public function delete($item_id) {
         
     }
+    
+    // handle checkins and checkouts
+    public function checkin($item_id) {
+        echo "implement checkin/checkout functionality. this one method does both. You need to look at the 'checkins' table to see if there is a currently checked out item with the matching item_id. If so, then the action to perform is to check in. If not, then the action to perform is to check out.";
+    }
 
-    public function qrcode($item_id) {
+    public function qrcode($item_id,$qraction) {
         $this->load->library('QRcode');
-        $data['qrdata'] = $item_id;
+        switch($qraction):
+           case 1: $url = "inventory/checkin/$item_id";
+        endswitch;
+        $data['qrdata'] = $url;
         $this->load->view('/inventory/qrcode', $data);
+    }
+
+    public function mobile_getitems() {
+        $items = $this->inventory_model->getallitems();
+        echo json_encode($items);
+        exit;
     }
 
     // http://localhost/inventory/mobile_checkin/3

@@ -14,12 +14,10 @@ class Auth extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-
         $this->load->library('authit');
         $this->load->helper('authit');
         $this->load->helper('html');
         $this->config->load('authit');
-
         $this->load->helper('url');
     }
 
@@ -68,6 +66,16 @@ class Auth extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    public function is_samford($email) {
+        if (strstr($email,"@samford.edu"))
+            $response = true;
+        else {
+            $this->form_validation->set_message('is_samford', 'Email must be a samford email address.');
+            $response = false;
+        }
+        return $response;
+    }
+    
     /**
      * Signup page
      */
@@ -80,7 +88,7 @@ class Auth extends CI_Controller {
         $this->load->helper('form');
         $data['error'] = '';
 
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[' . $this->config->item('authit_users_table') . '.email]');
+        $this->form_validation->set_rules('email', 'Email', 'required|callback_is_samford|valid_email|is_unique[' . $this->config->item('authit_users_table') . '.email]');
         $this->form_validation->set_rules('password', 'Password', 'required|min_length[' . $this->config->item('authit_password_min_length') . ']');
         $this->form_validation->set_rules('password_conf', 'Confirm Password', 'required|matches[password]');
 
