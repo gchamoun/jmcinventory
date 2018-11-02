@@ -38,7 +38,9 @@ class Auth extends CI_Controller {
 
         $this->load->library('form_validation');
         $this->load->helper('form');
+        $data['title'] = 'JMC Inventory Login';
         $data['error'] = false;
+        $data['nologout'] = true; // don't display a log out link on the login page
 
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -61,9 +63,15 @@ class Auth extends CI_Controller {
             }
         }
 
-        $this->load->view('templates/header',['title'=>'Login']);
+        $this->load->view('templates/header',$data);
         $this->load->view('auth/login', $data);
         $this->load->view('templates/footer');
+    }
+    
+    public function mobile_login() {
+        header('Content-Type: application/json');
+        $this->authit->login($this->input->post('email'), $this->input->post('password'));       
+        echo json_encode(array('id'=>user('id')));
     }
 
     public function is_samford($email) {

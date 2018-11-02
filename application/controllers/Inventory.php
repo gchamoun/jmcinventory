@@ -29,6 +29,7 @@ class Inventory extends CI_Controller {
                 $data['msg'] = "An unexpected error occurred";
             }
         }
+        $data['categories'] = $this->_prepareCategories();
         $this->load->view('templates/header', $data);
         $this->load->view('inventory/add', $data);
         $this->load->view('templates/footer');
@@ -49,6 +50,15 @@ class Inventory extends CI_Controller {
         return $response;
     }
 
+    protected function _prepareCategories() {
+        $categories = $this->inventory_model->getcategories();
+        $cats = [''=>''];
+        foreach ($categories as $cat) {
+            $cats[$cat->id] = $cat->title;
+        }
+        return $cats;
+    }
+    
     public function edit($item_id) {
         $data['title'] = 'Edit inventory item';
         $data['error'] = false;
@@ -66,19 +76,18 @@ class Inventory extends CI_Controller {
         } else {
             $data['item'] = $this->inventory_model->getitem($item_id);
         }
-        $categories = $this->inventory_model->getcategories();
-        $cats = [''=>''];
-        foreach ($categories as $cat) {
-            $cats[$cat->id] = $cat->title;
-        }
-        $data['categories'] = $cats;
+        $data['categories'] = $this->_prepareCategories();
         $this->load->view('templates/header', $data);
         $this->load->view('inventory/add', $data);
         $this->load->view('templates/footer');
     }
 
     public function delete($item_id) {
-        
+        if($this->inventory_model->delete($item_id)) {
+            echo "item $item_id was deleted.";
+        } else {
+            echo "item $item_id was not deleted";
+        }
     }
     
     // handle checkins and checkouts

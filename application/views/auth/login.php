@@ -9,8 +9,6 @@
     echo form_label('Password', 'password') .'<br />';
     echo form_password(array('name' => 'password', 'value' => set_value('password'))) .'<br />';
     echo form_error('password');
-    echo form_label('Is Mobile?', 'ismobile') .'<br />';
-    echo form_checkbox(array('name' => 'ismobile'),1) .'<br />';
     echo form_submit(array('type' => 'submit', 'value' => 'Login'));
     echo form_close();
     ?>

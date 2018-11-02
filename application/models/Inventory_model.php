@@ -56,7 +56,11 @@ class Inventory_model extends CI_Model {
         $data['id'] = $this->input->post('item_id');
         return $this->db->replace('items', $data);
     }
-
+    
+    public function delete($item_id) {
+        return $this->db->delete('items',['id'=>$item_id]);
+    }
+    
     public function getallitems() {
         $this->db->order_by('serial', 'asc');
         $query = $this->db->get_where('items');
