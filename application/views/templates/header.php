@@ -5,4 +5,5 @@
         </head>
         <body>
                 <h1><?php echo isset($title)?$title:'JMC Inventory'; ?></h1>
+                <?php echo isset($nologout)?'':anchor('auth/logout', 'Log out'); ?>
                 <?php echo isset($msg)?heading($msg,3,'class="message"'):''; ?>

@@ -33,11 +33,11 @@ endforeach;
 <table>
 <?php
 foreach ($items as $item):
-    echo "<tr><td>{$item->serial}</td>";
+    echo "<tr><td>".anchor("inventory/edit/{$item->id}",$item->serial)."</td>";
     echo "<td>{$item->description}</td>";
     echo "<td>{$item->accessories}</td>";
-    echo "<td><a href=\"/inventory/qrcode/{$item->id}\">print qrcode</a></td>";
-    echo "<td><img src=\"/inventory/qrcode/{$item->id}\" /></td>";
+    echo "<td style='text-align:center'>".anchor("inventory/qrcode/{$item->id}/1",img("inventory/qrcode/{$item->id}/1")."<br />print qrcode",['title'=>"print qrcode"])."</td>";
+    echo "<td>".anchor("inventory/delete/{$item->id}",img("assets/img/redx.gif"),['title'=>'delete','onclick'=>"return confirm('Are you sure you want to delete this item?');"])."</td>";
     echo "</tr>";
    
 endforeach;

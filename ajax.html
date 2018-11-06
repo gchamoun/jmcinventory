@@ -1,0 +1,40 @@
+<html>
+	<head>
+<style>body {margin:0}</style>
+		<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+		<script type="text/javascript">
+function loaditems() {
+$("#loadericon").show();
+$.get(
+"http://localhost/inventory/mobile_getitems/",
+false,
+function(data,status,xhr) {
+  $("#consolearea").html(JSON.stringify(data));
+  // data coming back from the server is a json encoded array of items
+  for (let i=0; i<data.length; i++) {
+	let item = data[i];
+	$("#itemstable tbody").append(
+'<tr><td>'+item.description+'</td><td>'+item.dateadded+'</td></tr>'
+);
+  }
+	$("#loadericon").hide();
+},
+"json");
+}
+		</script>
+	</head>
+	<body>
+<button onclick="loaditems(); return false;">Load Items</button>
+<img id="loadericon" src="ajax-loader.gif" style="display:none" />
+<div id="consolearea" style="width:100%;background:#eee"></div>
+<table id="itemstable">
+<tbody>
+<tr><th>title</th><th>date added</th></tr>
+</tbody>
+</table>
+
+	</body>
+</html>
