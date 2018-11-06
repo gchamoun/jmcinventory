@@ -23,7 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/';
+//For the time being, change this to your local ip address and the port where XAMPP is listening
+$config['base_url'] = 'http://172.31.131.169:80';
 
 /*
 |--------------------------------------------------------------------------

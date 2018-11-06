@@ -49,7 +49,7 @@ class Auth extends CI_Controller {
             if ($this->authit->login(set_value('email'), set_value('password'))) {
                 // Redirect to your logged in landing page here
                 if ($this->input->post("ismobile")) {
-                    echo json_encode(array('id'=>user('id')));
+                    echo json_encode(array('id' => user('id')));
                     exit;
                 }
 
@@ -63,9 +63,20 @@ class Auth extends CI_Controller {
             }
         }
 
-        $this->load->view('templates/header',['title'=>'Login']);
+        $this->load->view('templates/header', ['title' => 'Login']);
         $this->load->view('auth/login', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function mobile_login() {
+        header('Content-Type: application/json');
+        if ($this->authit->login($this->input->post('email'), $this->input->post('password'))) {
+            echo json_encode(array('id' => user('id')));
+        } else {
+            // Invalid login
+            echo json_encode(array('id' => '0'));
+        }
+        exit;
     }
 
     /**
@@ -103,7 +114,7 @@ class Auth extends CI_Controller {
             }
         }
 
-        $this->load->view('templates/header',['title'=>'Signup']);
+        $this->load->view('templates/header', ['title' => 'Signup']);
         $this->load->view('auth/signup', $data);
         $this->load->view('templates/footer');
     }
@@ -167,7 +178,7 @@ Note: This reset code will expire after ' . date('j M Y') . '.';
             $data['success'] = true;
         }
 
-        $this->load->view('templates/header',['title'=>'Forgot password']);
+        $this->load->view('templates/header', ['title' => 'Forgot password']);
         $this->load->view('auth/forgot_password', $data);
         $this->load->view('templates/footer');
     }
