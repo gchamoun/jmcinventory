@@ -104,15 +104,15 @@ class Inventory extends CI_Controller {
         $this->load->view('/inventory/qrcode', $data);
     }
 
-    public function mobile_getitems() {
-        $items = $this->inventory_model->getallitems();
-        echo json_encode($items);
+    public function mobile_getitem($item_id) {
+        header('Content-Type: application/json');
+        $item = $this->inventory_model->getitem($item_id);
+        echo json_encode($item);
         exit;
     }
 
-    // http://localhost/inventory/mobile_checkin/3
-    public function mobile_checkin($item_id) {
-        
+    public function mobile_checkin() {
+
     }
 
     public function mobile_checkout($item_id) {
