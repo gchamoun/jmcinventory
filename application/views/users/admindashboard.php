@@ -9,8 +9,8 @@
 <?php
 
 foreach ($reservations as $reservation):
-    
-   
+
+
 endforeach;
 
 ?>
@@ -21,15 +21,16 @@ endforeach;
 <?php
 
 foreach ($reservations as $reservation):
-    
-   
+
+
 endforeach;
 
 ?>
 </table>
 
 <h2>Inventory</h2>
-<a href="/inventory/add">Add item</a>
+<?php echo anchor("inventory/add","Add item"); ?> |
+<?php echo anchor("inventory/import","Import"); ?>
 <table>
 <?php
 foreach ($items as $item):
@@ -39,7 +40,7 @@ foreach ($items as $item):
     echo "<td style='text-align:center'>".anchor("inventory/qrcode/{$item->id}/1",img("inventory/qrcode/{$item->id}/1")."<br />print qrcode",['title'=>"print qrcode"])."</td>";
     echo "<td>".anchor("inventory/delete/{$item->id}",img("assets/img/redx.gif"),['title'=>'delete','onclick'=>"return confirm('Are you sure you want to delete this item?');"])."</td>";
     echo "</tr>";
-   
+
 endforeach;
 ?>
 </table>
