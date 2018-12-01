@@ -7,14 +7,19 @@ class Inventory extends CI_Controller {
         $this->load->library('authit');
         $this->load->helper('authit');
         $this->config->load('authit');
+        $this->load->model('users_model');
         $this->load->model('inventory_model');
         $this->load->helper('html');
         $this->load->helper('url');
         $this->load->library('session');
     }
 
+    protected function _isAuthorized($allowedroles=[Users_model::WORKER_USER,Users_model::ADMIN_USER]) {
+      return logged_in() && in_array(user('role_id'),$allowedroles);
+    }
+
     public function add() {
-        if (!logged_in())
+        if (!$this->_isAuthorized())
             redirect('auth/login');
 
         $this->load->library('form_validation');
@@ -32,6 +37,23 @@ class Inventory extends CI_Controller {
         $data['categories'] = $this->_prepareCategories();
         $this->load->view('templates/header', $data);
         $this->load->view('inventory/add', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function import() {
+      if (!$this->_isAuthorized())
+        redirect('auth/login');
+
+        $this->load->helper('form');
+        $data['title'] = 'Import inventory items from CSV';
+        $data['error'] = false;
+        if (isset($_FILES['csvfile'])) {
+            list($cnt,$errors) = $this->inventory_model->import($_FILES["csvfile"]["tmp_name"]);
+            $err = count($errors);
+            $data['msg'] = "$cnt item(s) imported successfully. $err error(s) occurred.";
+        }
+        $this->load->view('templates/header', $data);
+        $this->load->view('inventory/import', $data);
         $this->load->view('templates/footer');
     }
 
@@ -58,7 +80,7 @@ class Inventory extends CI_Controller {
         }
         return $cats;
     }
-    
+
     public function edit($item_id) {
         $data['title'] = 'Edit inventory item';
         $data['error'] = false;
@@ -89,7 +111,7 @@ class Inventory extends CI_Controller {
             echo "item $item_id was not deleted";
         }
     }
-    
+
     // handle checkins and checkouts
     public function checkin($item_id) {
         echo "implement checkin/checkout functionality. this one method does both. You need to look at the 'checkins' table to see if there is a currently checked out item with the matching item_id. If so, then the action to perform is to check in. If not, then the action to perform is to check out.";
@@ -111,12 +133,13 @@ class Inventory extends CI_Controller {
         exit;
     }
 
-    public function mobile_checkin() {
+    // http://localhost/inventory/mobile_checkin/3
+    public function mobile_checkin($item_id) {
 
     }
 
     public function mobile_checkout($item_id) {
-        
+
     }
 
 }

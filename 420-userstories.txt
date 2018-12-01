@@ -1,0 +1,33 @@
+As an admin, I would like to restrict certain items to students taking certain courses.
+
+As an admin, I would like to see historical data about which items are being checked out for courses.
+
+As a student, I would like to check out an item.
+  0. Student views current inventory online
+  1. Student worker logs into phone app
+  2. Student walks up to the physical location where all the items are kept
+  3. Student worker says hi, what is your name?
+  4a. Student says I don't have an account. Student worker directs student to create an account
+  4b. Student worker types in the name given which searches through list of users for the student receiving the item
+  5. Student worker scans item(s), clicks next
+  6. Student worker asks student to confirm which class they are taking. Student worker verifies that item(s) are allowed for that course.
+  7. Student worker sets a date due (possibly based on default weekend value)
+  8. Student worker hands student phone or tablet with liability waiver including
+     list of classes that student must be part of in order to check out that item.
+  9. Student signs liability and clicks finish
+  
+[At this point, a row with all pertinent data
+ is inserted into reservations table:
+    user_id (student who is receiving item)
+    worker_checkout_id (student worker id)
+    datecheckout (generated as current timestamp)
+    datecreated (same as datecheckout)
+    waiversignature]
+
+[Additionally, one or more rows are inserted into the
+ reservation_details table containing the following info:
+    reservation_id
+    item_id
+    datedue
+    course_id]
+    

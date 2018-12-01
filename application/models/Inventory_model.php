@@ -31,7 +31,7 @@ class Inventory_model extends CI_Model {
             'datemodified' => $now,
             'dateadded' => $now
         );
-        
+
         if ($this->input->post('category_id')) {
             $data['category_id'] = $this->input->post('category_id');
         }
@@ -56,11 +56,52 @@ class Inventory_model extends CI_Model {
         $data['id'] = $this->input->post('item_id');
         return $this->db->replace('items', $data);
     }
-    
+
     public function delete($item_id) {
         return $this->db->delete('items',['id'=>$item_id]);
     }
-    
+
+    // expects data to be in CSV format
+    public function import($filename) {
+        $count = 0;
+        $success = 0;
+        $errors = [];
+        $fp = fopen($filename,'r');
+        while($csv_line = fgetcsv($fp,1024)) {
+            if($count++ === 0) {
+                continue; // skips header row
+            }
+            $now = date("Y-m-d H:i:s");
+            $data = array(
+                'category_id' => $csv_line[0] ,
+                'description' => $csv_line[1],
+                'serial' => $csv_line[2],
+                'accessories' => $csv_line[3],
+                'dateadded' => $now,
+                'datemodified' => $now
+               );
+            if (!$csv_line[2]) { // get rid of empty serial numbers
+              unset($data['serial']);
+            }
+            if ($this->db->insert('items', $data)) {
+              $success++;
+              if ($csv_line[4]) { // handle notes
+                $data = array(
+                  'note_id' => 1, // hard code the "custom" note, must be manually inserted into database as part of getting a new database install setup
+                  'item_id' => $this->db->insert_id(),
+                  'dateadded' => $now,
+                  'description' => $csv_line[4]
+                );
+                $this->db->insert('item_notes',$data);
+              }
+            } else {
+              $errors[] = "Unable to insert - " . $data['description'] . ' ' . $data['serial'];
+            }
+        }
+        fclose($fp);
+        return [$count,$errors];
+    }
+
     public function getallitems() {
         $this->db->order_by('serial', 'asc');
         $query = $this->db->get_where('items');
