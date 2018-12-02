@@ -36,8 +36,8 @@ public function getAllUsers() {
     echo json_encode($users);
     exit;
 }
-public function checkOutItems($userId, $worker_checkout_id,$itemid) {
-    $users = $this->Reservations_model->checkOutItems($userId, $worker_checkout_id,$itemid);
+public function checkOutItems($userId, $worker_checkout_id,$itemid,$reservationIdExist) {
+    $users = $this->Reservations_model->checkOutItems($userId, $worker_checkout_id,$itemid,$reservationIdExist);
     echo json_encode($users);
     exit;
 }
@@ -45,12 +45,12 @@ public function getReservedItems($itemid){
   $users = $this->Reservations_model->getReservedItems($itemid);
 
 }
-public function checkIn($userId, $worker_checkin_id, $itemid) {
-    $users = $this->Reservations_model->checkIn($userId, $worker_checkout_id,$itemid);
+public function checkIn($worker_checkin_id, $itemid) {
+    $users = $this->Reservations_model->checkIn($worker_checkin_id,$itemid);
     exit;
 }
 public function getItemsCheckin($itemid) {
-    $users = $this->Reservations_model->checkIn($userId, $worker_checkout_id,$itemid);
+    $users = $this->Reservations_model->getItemsCheckin($itemid);
     exit;
 }
 
