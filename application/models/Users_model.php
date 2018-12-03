@@ -1,20 +1,23 @@
 <?php
 
-class Users_model extends CI_Model {
+class Users_model extends CI_Model
+{
 
     // NOTE - these roles must be added in this order to the database so that the role_id matches these values
     const DEFAULT_USER = 1;
     const WORKER_USER = 2;
     const ADMIN_USER = 3;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->load->database();
     }
 
-    public function getallusers() {
+    public function getallusers()
+    {
         $this->db->select("*");
         $this->db->from('users');
-        $this->db->join('roles','users.role_id=roles.id');
+        $this->db->join('roles', 'users.role_id=roles.id');
         $query = $this->db->get();
         $results = $query->result();
         foreach ($results as &$result) {
@@ -23,32 +26,43 @@ class Users_model extends CI_Model {
         return $results;
     }
 
-    public function getallreservations() {
+    public function getallreservations()
+    {
         $this->db->select("*");
         $this->db->from('reservations');
-        $this->db->join('users','reservations.user_id=users.id');
-        $this->db->join('reservation_details','reservation_details.reservation_id=reservations.id');
-        $this->db->join('items','reservation_details.item_id=items.id');
+        $this->db->join('users', 'reservations.user_id=users.id');
+        $this->db->join('reservation_details', 'reservation_details.reservation_id=reservations.id');
+        $this->db->join('items', 'reservation_details.item_id=items.id');
         $query = $this->db->get();
         return $query->result();
     }
 
-    public function getreservations($user_id) {
+    public function getreservations($user_id)
+    {
         $this->db->select("*");
         $this->db->from('reservations');
-        $this->db->join('users','reservations.user_id=users.id');
-        $this->db->join('reservation_details','reservation_details.reservation_id=reservations.id');
-        $this->db->join('items','reservation_details.item_id=items.id');
-        $this->db->where('users.id',$user_id);
+        $this->db->join('users', 'reservations.user_id=users.id');
+        $this->db->join('reservation_details', 'reservation_details.reservation_id=reservations.id');
+        $this->db->join('items', 'reservation_details.item_id=items.id');
+        $this->db->where('users.id', $user_id);
         $query = $this->db->get();
         return $query->result();
     }
 
-// old examples from news tutorial
-    public function set_news() {
+    public function getroles()
+    {
+        $this->db->select("*");
+        $this->db->from('roles');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    // old examples from news tutorial
+    public function set_news()
+    {
         $this->load->helper('url');
 
-        $slug = url_title($this->input->post('title'), 'dash', TRUE);
+        $slug = url_title($this->input->post('title'), 'dash', true);
 
         $data = array(
             'title' => $this->input->post('title'),
@@ -59,12 +73,11 @@ class Users_model extends CI_Model {
         return $this->db->insert('news', $data);
     }
 
-    public function delete_news($slug) {
+    public function delete_news($slug)
+    {
         if (!$slug) {
             return false;
         }
         return $this->db->delete('news', array('slug' => $slug));
     }
-
-
 }

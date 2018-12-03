@@ -1,26 +1,17 @@
 <?php
 
-class Inventory extends CI_Controller {
-
-    public function __construct() {
+class Inventory extends JMC_Controller
+{
+    public function __construct()
+    {
         parent::__construct();
-        $this->load->library('authit');
-        $this->load->helper('authit');
-        $this->config->load('authit');
-        $this->load->model('users_model');
-        $this->load->model('inventory_model');
-        $this->load->helper('html');
-        $this->load->helper('url');
-        $this->load->library('session');
     }
 
-    protected function _isAuthorized($allowedroles=[Users_model::WORKER_USER,Users_model::ADMIN_USER]) {
-      return logged_in() && in_array(user('role_id'),$allowedroles);
-    }
-
-    public function add() {
-        if (!$this->_isAuthorized())
+    public function add()
+    {
+        if (!$this->_isAuthorized()) {
             redirect('auth/login');
+        }
 
         $this->load->library('form_validation');
         $this->load->helper('form');
@@ -40,15 +31,17 @@ class Inventory extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function import() {
-      if (!$this->_isAuthorized())
-        redirect('auth/login');
+    public function import()
+    {
+        if (!$this->_isAuthorized()) {
+            redirect('auth/login');
+        }
 
         $this->load->helper('form');
         $data['title'] = 'Import inventory items from CSV';
         $data['error'] = false;
         if (isset($_FILES['csvfile'])) {
-            list($cnt,$errors) = $this->inventory_model->import($_FILES["csvfile"]["tmp_name"]);
+            list($cnt, $errors) = $this->inventory_model->import($_FILES["csvfile"]["tmp_name"]);
             $err = count($errors);
             $data['msg'] = "$cnt item(s) imported successfully. $err error(s) occurred.";
         }
@@ -57,22 +50,8 @@ class Inventory extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function check_serial($serial) {
-        if ($this->input->post('item_id'))
-            $id = $this->input->post('item_id');
-        else
-            $id = '';
-        $result = $this->inventory_model->check_serial($id, $serial);
-        if ($result == 0)
-            $response = true;
-        else {
-            $this->form_validation->set_message('check_serial', 'Serial must be unique');
-            $response = false;
-        }
-        return $response;
-    }
-
-    protected function _prepareCategories() {
+    protected function _prepareCategories()
+    {
         $categories = $this->inventory_model->getcategories();
         $cats = [''=>''];
         foreach ($categories as $cat) {
@@ -81,7 +60,12 @@ class Inventory extends CI_Controller {
         return $cats;
     }
 
-    public function edit($item_id) {
+    public function edit($item_id)
+    {
+        if (!$this->_isAuthorized()) {
+            redirect('auth/login');
+        }
+
         $data['title'] = 'Edit inventory item';
         $data['error'] = false;
         $this->load->library('form_validation');
@@ -104,8 +88,30 @@ class Inventory extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function delete($item_id) {
-        if($this->inventory_model->delete($item_id)) {
+    public function check_serial($serial)
+    {
+        if ($this->input->post('item_id')) {
+            $id = $this->input->post('item_id');
+        } else {
+            $id = '';
+        }
+        $result = $this->inventory_model->check_serial($id, $serial);
+        if ($result == 0) {
+            $response = true;
+        } else {
+            $this->form_validation->set_message('check_serial', 'Serial must be unique');
+            $response = false;
+        }
+        return $response;
+    }
+
+    public function delete($item_id)
+    {
+        if (!$this->_isAuthorized()) {
+            redirect('auth/login');
+        }
+
+        if ($this->inventory_model->delete($item_id)) {
             echo "item $item_id was deleted.";
         } else {
             echo "item $item_id was not deleted";
@@ -113,32 +119,34 @@ class Inventory extends CI_Controller {
     }
 
     // handle checkins and checkouts
-    public function checkin($item_id) {
+    public function checkin($item_id)
+    {
         echo "implement checkin/checkout functionality. this one method does both. You need to look at the 'checkins' table to see if there is a currently checked out item with the matching item_id. If so, then the action to perform is to check in. If not, then the action to perform is to check out.";
     }
 
-    public function qrcode($item_id,$qraction) {
+    public function qrcode($item_id, $qraction)
+    {
         $this->load->library('QRcode');
-        switch($qraction):
+        switch ($qraction):
            case 1: $url = "inventory/checkin/$item_id";
         endswitch;
         $data['qrdata'] = $url;
         $this->load->view('/inventory/qrcode', $data);
     }
 
-    public function mobile_getitems() {
+    public function mobile_getitems()
+    {
         $items = $this->inventory_model->getallitems();
         echo json_encode($items);
         exit;
     }
 
     // http://localhost/inventory/mobile_checkin/3
-    public function mobile_checkin($item_id) {
-
+    public function mobile_checkin($item_id)
+    {
     }
 
-    public function mobile_checkout($item_id) {
-
+    public function mobile_checkout($item_id)
+    {
     }
-
 }
