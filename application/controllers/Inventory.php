@@ -118,10 +118,77 @@ class Inventory extends JMC_Controller
         }
     }
 
-    // handle checkins and checkouts
-    public function checkin($item_id)
+    public function valid_date($datedue) {
+      if (!$datedue) {
+        $this->form_validation->set_message('valid_date', 'The Date due field is required.');
+        return false;
+      }
+      if (!(bool)strtotime($datedue)) {
+        $this->form_validation->set_message('valid_date', 'The Date due field is not formatted correctly.');
+        return false;
+      }
+      return true;
+    }
+
+    public function valid_student($user_id) {
+      if (!$user_id) {
+        $this->form_validation->set_message('valid_student', 'Please select a student from the list.');
+        return false;
+      }
+      if (!$this->users_model->getuser($user_id)) {
+        $this->form_validation->set_message('valid_student', 'The student entered does not exist in the system. Please have the student create an account first.');
+        return false;
+      }
+      return true;
+    }
+
+    protected function _prepareUsers()
     {
-        echo "implement checkin/checkout functionality. this one method does both. You need to look at the 'checkins' table to see if there is a currently checked out item with the matching item_id. If so, then the action to perform is to check in. If not, then the action to perform is to check out.";
+        $allusers = $this->users_model->getallusers();
+        $users = [];
+        foreach ($allusers as $user) {
+            $users[$user->id] = $user->email;
+        }
+        return $users;
+    }
+
+
+    // handle checkins and checkouts
+    public function checkout($item_id)
+    {
+      // second step is getting signature - https://github.com/williammalone/Simple-HTML5-Drawing-App
+      if (!$this->_isAuthorized()) {
+          redirect('auth/login');
+      }
+      $data['item'] = $this->inventory_model->getitem($item_id);
+      $data['users'] = $this->_prepareUsers();
+      $data['title'] = 'Item checkout STEP 1';
+      $data['error'] = false;
+      $this->load->library('form_validation');
+      $this->load->helper('form');
+      $this->form_validation->set_rules('datedue', 'Date due', 'callback_valid_date');
+      $this->form_validation->set_rules('user_id', 'Student email', 'callback_valid_student');
+      if ($data['item']->accessories) {
+        $i=0;
+        foreach ($data['item']->accessories as $acc) {
+          $this->form_validation->set_rules('accessories'.$i++, 'Accessories', 'required');
+        }
+      }
+      if ($this->form_validation->run()) {
+          //$success = $this->inventory_model->checkout();
+          $success = true;
+          if ($success) {
+              $data['msg'] = "The item has been checked out. Please enter signature now.";
+          } else {
+              $data['msg'] = "An unexpected error occurred.";
+          }
+      } else {
+          $data['item'] = $this->inventory_model->getitem($item_id);
+      }
+      $data['categories'] = $this->_prepareCategories();
+      $this->load->view('templates/header', $data);
+      $this->load->view('inventory/checkout', $data);
+      $this->load->view('templates/footer');
     }
 
     public function qrcode($item_id, $qraction)

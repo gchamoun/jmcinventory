@@ -13,16 +13,28 @@ class Users_model extends CI_Model
         $this->load->database();
     }
 
-    public function getallusers()
+    public function getuser($user_id)
     {
         $this->db->select("*");
         $this->db->from('users');
-        $this->db->join('roles', 'users.role_id=roles.id');
+        $this->db->where('users.id', $user_id);
         $query = $this->db->get();
         $results = $query->result();
-        foreach ($results as &$result) {
-            $result->role = $result->title;
+        if ($results) {
+          return $results[0];
+        } else {
+          return false;
         }
+    }
+
+    public function getallusers()
+    {
+        $this->db->select("users.*");
+        $this->db->from('users');
+        $this->db->join('roles', 'users.role_id=roles.id');
+        $this->db->order_by('email');
+        $query = $this->db->get();
+        $results = $query->result();
         return $results;
     }
 
