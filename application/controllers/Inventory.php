@@ -134,19 +134,4 @@ class Inventory extends JMC_Controller
         $this->load->view('/inventory/qrcode', $data);
     }
 
-    public function mobile_getitems()
-    {
-        $items = $this->inventory_model->getallitems();
-        echo json_encode($items);
-        exit;
-    }
-
-    // http://localhost/inventory/mobile_checkin/3
-    public function mobile_checkin($item_id)
-    {
-    }
-
-    public function mobile_checkout($item_id)
-    {
-    }
 }

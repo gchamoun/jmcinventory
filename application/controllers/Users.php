@@ -83,11 +83,4 @@ class Users extends JMC_Controller
         $this->load->view('templates/footer');
     }
 
-    // user should already be logged in
-    public function mobile_getreservations()
-    {
-        $reservations = $this->users->getreservations(user('id'));
-        echo json_encode($reservations);
-        exit;
-    }
 }
