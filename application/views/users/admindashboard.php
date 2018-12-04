@@ -29,16 +29,16 @@ endforeach;
 </table>
 
 <h2>Inventory</h2>
-<?php echo anchor("inventory/add","Add item"); ?> |
-<?php echo anchor("inventory/import","Import"); ?>
+<?php echo anchor("inventory/add", "Add item"); ?> |
+<?php echo anchor("inventory/import", "Import"); ?>
 <table>
 <?php
 foreach ($items as $item):
-    echo "<tr><td>".anchor("inventory/edit/{$item->id}",$item->serial)."</td>";
+    echo "<tr><td>".anchor("inventory/edit/{$item->id}", $item->serial)."</td>";
     echo "<td>{$item->description}</td>";
     echo "<td>{$item->accessories}</td>";
-    echo "<td style='text-align:center'>".anchor("inventory/qrcode/{$item->id}/1",img("inventory/qrcode/{$item->id}/1")."<br />print qrcode",['title'=>"print qrcode"])."</td>";
-    echo "<td>".anchor("inventory/delete/{$item->id}",img("assets/img/redx.gif"),['title'=>'delete','onclick'=>"return confirm('Are you sure you want to delete this item?');"])."</td>";
+    echo "<td style='text-align:center'>".anchor("inventory/qrcode/{$item->id}/1", img("inventory/qrcode/{$item->id}/1")."<br />print qrcode", ['title'=>"print qrcode"])."</td>";
+    echo "<td>".anchor("inventory/delete/{$item->id}", img("assets/img/redx.gif"), ['title'=>'delete','onclick'=>"return confirm('Are you sure you want to delete this item?');"])."</td>";
     echo "</tr>";
 
 endforeach;
@@ -46,7 +46,7 @@ endforeach;
 </table>
 
 <h2>Users</h2>
-<a href="/users/adminadd">Add user</a>
+<a href="users/adminadd">Add user</a>
 <table>
 <?php
 foreach ($users as $user):
