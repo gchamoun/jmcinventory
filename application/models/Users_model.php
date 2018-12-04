@@ -12,14 +12,14 @@ class Users_model extends CI_Model {
     }
 
     public function getallusers() {
-        $this->db->select("*");
+        $this->db->select("email");
         $this->db->from('users');
-        $this->db->join('roles','users.role_id=roles.id');
+        // $this->db->join('roles','users.role_id=roles.id');
         $query = $this->db->get();
         $results = $query->result();
-        foreach ($results as &$result) {
-            $result->role = $result->title;
-        }
+        // foreach ($results as &$result) {
+        //     $result->role = $result->title;
+        // }
         return $results;
     }
 

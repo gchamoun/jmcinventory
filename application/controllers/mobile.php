@@ -16,6 +16,7 @@ class mobile extends CI_Controller {
 
     // user should already be logged in
     public function getUsers() {
+
       $users = $this->users_model->getallusers();
         exit;
     }
@@ -33,7 +34,8 @@ public function getItem($item_id) {
 }
 public function getAllUsers() {
     $users = $this->Users_model->getAllUsers();
-    echo json_encode($users);
+    $output = json_encode(array('results' => $users));
+print($output);
     exit;
 }
 public function checkOutItems($userId, $worker_checkout_id,$itemid,$reservationIdExist) {
@@ -45,8 +47,12 @@ public function getReservedItems($itemid){
   $users = $this->Reservations_model->getReservedItems($itemid);
 
 }
-public function checkIn($worker_checkin_id, $itemid) {
-    $users = $this->Reservations_model->checkIn($worker_checkin_id,$itemid);
+public function AllcheckIn($worker_checkin_id, $itemid) {
+    $users = $this->Reservations_model->AllcheckIn($worker_checkin_id,$itemid);
+    exit;
+}
+public function individualCheckin($worker_checkin_id, $itemid) {
+    $users = $this->Reservations_model->individualCheckin($worker_checkin_id,$itemid);
     exit;
 }
 public function getItemsCheckin($itemid) {
