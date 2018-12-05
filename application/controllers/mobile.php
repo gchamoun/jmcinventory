@@ -59,6 +59,10 @@ public function getItemsCheckin($itemid) {
     $users = $this->Reservations_model->getItemsCheckin($itemid);
     exit;
 }
+public function getUsersCheckin($userid) {
+    $users = $this->Reservations_model->getUserCheckin($userid);
+    exit;
+}
 
 
 

@@ -21,7 +21,7 @@ class Users_model extends CI_Model
         $query = $this->db->get();
         $results = $query->result();
         if ($results) {
-          return $results[0];
+          return $results;
         } else {
           return false;
         }

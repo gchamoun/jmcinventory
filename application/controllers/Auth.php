@@ -77,11 +77,12 @@ class Auth extends CI_Controller {
         }
         return $response;
     }
-    
+
     public function mobile_login() {
         header('Content-Type: application/json');
         if ($this->authit->login($this->input->post('email'), $this->input->post('password'))) {
-            echo json_encode(array('id' => user('id')));
+
+            echo json_encode(user('roles'));
         } else {
             // Invalid login
             echo json_encode(array('id' => '0'));
