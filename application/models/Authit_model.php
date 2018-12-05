@@ -58,6 +58,7 @@ class Authit_model extends CI_Model {
 			'email' => filter_var($email, FILTER_SANITIZE_EMAIL),
                         'role_id' => $role_id,
 			'password' => $password, // Should be hashed
+			'role_id' => 1,
 			'created' => date('Y-m-d H:i:s')
 		);
 		$this->db->insert($this->users_table, $data);
